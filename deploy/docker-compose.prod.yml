@@ -40,8 +40,9 @@ services:
       redis:
         condition: service_started
     # 仅绑回环，由 nginx 在 19004 反代；备案前 IP 直连
+    # 注意：3000 已被博客容器占用，故宿主侧改用 3001（容器内仍为 3000）
     ports:
-      - "127.0.0.1:3000:3000"
+      - "127.0.0.1:3001:3000"
     networks: [yujuke]
 
 volumes:
