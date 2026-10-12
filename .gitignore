@@ -1,0 +1,24 @@
+# ===== 默认拒绝：本仓库只收录经人工审查的文档，杜绝任何密钥/凭证/基础设施泄漏 =====
+# Default deny — only curated docs are allowed in; nothing else can be committed.
+
+*
+!.gitignore
+!README.md
+!ARCHITECTURE.md
+!LICENSE
+!assets/
+!assets/*
+!docs/
+!docs/*
+
+# 安全网：显式阻断任何可能的密钥/凭证文件（即便被误加入也会被忽略）
+*.env
+*.key
+*.pem
+*.pub
+*htpasswd*
+*secret*
+*credential*
+*password*
+*.gguf
+*.toml

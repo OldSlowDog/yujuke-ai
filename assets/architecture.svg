@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 460" font-family="'Segoe UI',system-ui,-apple-system,sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#475569"/>
+    </marker>
+    <style>
+      .box { fill:#ffffff; stroke:#94a3b8; stroke-width:1.5; rx:10; }
+      .tlabel { font-size:13px; font-weight:600; fill:#0f172a; }
+      .tsub { font-size:10.5px; fill:#64748b; }
+      .flow { font-size:10px; fill:#475569; }
+      .title { font-size:16px; font-weight:700; fill:#0f172a; }
+      .grp { font-size:11px; font-weight:600; fill:#475569; }
+      .edge-fill { fill:#eff6ff; stroke:#3b82f6; }
+      .cloud-fill { fill:#f0fdf4; stroke:#22c55e; }
+      .loop-fill { fill:#fef2f2; stroke:#ef4444; }
+      .tool-fill { fill:#faf5ff; stroke:#a855f7; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="760" height="460" fill="#f8fafc"/>
+  <text x="24" y="30" class="title">隅居客 · 混合「边缘推理 + 云端反代」架构</text>
+
+  <!-- Browser -->
+  <rect class="box" x="24" y="60" width="150" height="64" rx="10"/>
+  <text x="99" y="92" text-anchor="middle" class="tlabel">浏览器</text>
+  <text x="99" y="110" text-anchor="middle" class="tsub">chat.html · 白名单鉴权</text>
+
+  <!-- Cloud VPS group -->
+  <rect class="cloud-fill" x="210" y="48" width="320" height="150" rx="12"/>
+  <text x="222" y="68" class="grp">上海 VPS（云端反代）</text>
+  <rect class="box" x="230" y="78" width="280" height="30" rx="8"/>
+  <text x="370" y="98" text-anchor="middle" class="tsub">nginx · TLS 终止 · 白名单/密钥</text>
+  <rect class="box" x="230" y="116" width="280" height="30" rx="8"/>
+  <text x="370" y="136" text-anchor="middle" class="tsub">Portal :19001（Docker，会话/编排）</text>
+  <rect class="box" x="230" y="154" width="280" height="30" rx="8"/>
+  <text x="370" y="174" text-anchor="middle" class="tsub">Console :19002（内网 · TOTP）</text>
+
+  <!-- Agent Loop -->
+  <rect class="loop-fill" x="210" y="222" width="320" height="74" rx="12"/>
+  <text x="370" y="248" text-anchor="middle" class="tlabel">Agent 循环</text>
+  <text x="370" y="268" text-anchor="middle" class="tsub">重复守卫 · 步数硬上限(100) · 分层思考</text>
+  <text x="370" y="284" text-anchor="middle" class="tsub">轮内上下文护栏 · 防空回复</text>
+
+  <!-- Tool Bridge -->
+  <rect class="tool-fill" x="210" y="330" width="320" height="84" rx="12"/>
+  <text x="370" y="356" text-anchor="middle" class="tlabel">工具桥 MCP Bridge :8798</text>
+  <text x="370" y="376" text-anchor="middle" class="tsub">REST · X-MCP-Key · IP 白名单</text>
+  <text x="370" y="394" text-anchor="middle" class="tsub">文件 / 待办 / 预览·截图·求值 / 记忆 / 视觉 · 16–17 工具</text>
+
+  <!-- Edge Laptop -->
+  <rect class="edge-fill" x="580" y="120" width="160" height="220" rx="12"/>
+  <text x="660" y="146" text-anchor="middle" class="grp">笔记本（边缘推理）</text>
+  <rect class="box" x="598" y="158" width="124" height="40" rx="8"/>
+  <text x="660" y="178" text-anchor="middle" class="tlabel">llama.cpp</text>
+  <text x="660" y="194" text-anchor="middle" class="tsub">llama-server</text>
+  <rect class="box" x="598" y="208" width="124" height="34" rx="8"/>
+  <text x="660" y="229" text-anchor="middle" class="tsub">Qwen3.5-4B Q6_K</text>
+  <rect class="box" x="598" y="250" width="124" height="30" rx="8"/>
+  <text x="660" y="270" text-anchor="middle" class="tsub">128k 上下文</text>
+  <rect class="box" x="598" y="286" width="124" height="30" rx="8"/>
+  <text x="660" y="306" text-anchor="middle" class="tsub">mmproj-F16 视觉</text>
+  <rect class="box" x="598" y="322" width="124" height="30" rx="8"/>
+  <text x="660" y="342" text-anchor="middle" class="tsub">llm-supervisor</text>
+  <text x="660" y="372" text-anchor="middle" class="tsub">冷启动 ~39s 自动恢复</text>
+
+  <!-- Arrows -->
+  <path d="M174,92 C190,92 192,123 208,123" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="191" y="106" text-anchor="middle" class="flow">HTTPS</text>
+
+  <path d="M370,198 C370,205 370,210 370,220" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+
+  <path d="M530,160 C552,160 560,200 578,205" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <text x="556" y="178" text-anchor="middle" class="flow">推理</text>
+
+  <path d="M530,250 C552,250 560,240 578,235" fill="none" stroke="#475569" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+  <text x="556" y="248" text-anchor="middle" class="flow">结果</text>
+
+  <path d="M370,296 C370,310 370,320 370,330" fill="none" stroke="#a855f7" stroke-width="1.6" marker-end="url(#arrow)"/>
+  <path d="M370,330 C370,320 370,308 370,296" fill="none" stroke="#a855f7" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+  <text x="486" y="318" text-anchor="middle" class="flow" fill="#a855f7">调用 / 结果</text>
+</svg>
