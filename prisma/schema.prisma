@@ -8,6 +8,11 @@
 
 generator client {
   provider = "prisma-client-js"
+  // ⚠️ 必须显式声明运行环境：只写 "native" 时，构建镜像里检测到的是什么版本就只生成
+  //    那一个引擎。实测在 node:20-slim(Debian 12 / OpenSSL 3.0) 上生成出了
+  //    debian-openssl-1.1.x 的引擎，运行时报
+  //    "could not locate the Query Engine for runtime debian-openssl-3.0.x" 并崩溃重启。
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
