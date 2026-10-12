@@ -1,0 +1,53 @@
+# 生产部署：PostgreSQL + Redis + 隅居客后端
+# 用法：在 deploy/ 目录，
+#   cp .env.template .env   # 填入真实值（尤其 LLM_SUP_KEY）
+#   docker compose -f docker-compose.prod.yml up -d --build
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./postgres-init:/docker-entrypoint-initdb.d:ro
+    networks: [yujuke]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redisdata:/data
+    networks: [yujuke]
+
+  api:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    # 仅绑回环，由 nginx 在 19004 反代；备案前 IP 直连
+    ports:
+      - "127.0.0.1:3000:3000"
+    networks: [yujuke]
+
+volumes:
+  pgdata:
+  redisdata:
+
+networks:
+  yujuke:
+    driver: bridge
