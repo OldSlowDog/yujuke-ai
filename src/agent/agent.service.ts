@@ -3,6 +3,7 @@ import { ClientGrpc } from '@nestjs/microservices';
 import { Inject } from '@nestjs/common';
 import { firstValueFrom, Observable } from 'rxjs';
 import { PrismaService } from '../prisma/prisma.service';
+import { Prisma } from '@prisma/client';
 
 interface InferenceStream {
   streamChat(req: Record<string, unknown>): Observable<Record<string, unknown>>;
@@ -117,8 +118,8 @@ export class AgentService {
         data: {
           messageId: msg.id,
           name: pending.name,
-          arguments: parsedArgs,
-          result: parsedResult,
+          arguments: parsedArgs as unknown as Prisma.InputJsonValue,
+          result: parsedResult ? (parsedResult as unknown as Prisma.InputJsonValue) : undefined,
           isError: res.is_error,
         },
       });
