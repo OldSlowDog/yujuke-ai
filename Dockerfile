@@ -1,5 +1,8 @@
 # 隅居客后端 · 多阶段构建
-FROM node:20-alpine AS build
+# 注意：基础镜像必须用 Debian 系（node:20-slim），不能用 alpine。
+# Prisma 引擎在 musl(alpine) 上无法检测 libssl/openssl 版本（回落 openssl-1.1.x），
+# 会导致 "Could not parse schema engine response" 并崩溃重启。
+FROM node:20-slim AS build
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
@@ -7,9 +10,12 @@ COPY . .
 RUN npx prisma generate
 RUN npm run build
 
-FROM node:20-alpine AS runtime
+FROM node:20-slim AS runtime
 WORKDIR /app
 ENV NODE_ENV=production
+# Prisma 引擎依赖 OpenSSL；Debian slim 默认已带 libssl3，此处显式确保
+RUN apt-get update && apt-get install -y --no-install-recommends openssl ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
 # 复制含 prisma CLI 的完整依赖（db push 需要）；生产可改为仅 prodDependencies
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
