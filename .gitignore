@@ -10,6 +10,10 @@
 !assets/*
 !docs/
 !docs/*
+!eval/
+!eval/**
+!transcripts/
+!transcripts/**
 
 # 安全网：显式阻断任何可能的密钥/凭证文件（即便被误加入也会被忽略）
 *.env

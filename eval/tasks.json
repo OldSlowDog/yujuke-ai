@@ -1,0 +1,122 @@
+[
+  {
+    "id": "T01",
+    "title": "读取并总结文件",
+    "user_prompt": "帮我把工作区里的 report.md 读出来，总结成三点",
+    "expected_tools": ["read_file"],
+    "expected_sequence": ["read_file"],
+    "order_sensitive": false,
+    "success_criteria": "调用 read_file 读取目标文件，并产出包含至少三点的中文总结",
+    "scoring": "tool_recall"
+  },
+  {
+    "id": "T02",
+    "title": "修改文件指定段落",
+    "user_prompt": "把 config.js 里的端口 8080 改成 9090",
+    "expected_tools": ["read_file", "edit_file"],
+    "expected_sequence": ["read_file", "edit_file"],
+    "order_sensitive": true,
+    "success_criteria": "先读取再编辑，且编辑命中目标字符串",
+    "scoring": "tool_recall+order"
+  },
+  {
+    "id": "T03",
+    "title": "生成网页并交付前自检",
+    "user_prompt": "做一个会转的风车 CSS 动画网页",
+    "expected_tools": ["write_file", "verify__verify"],
+    "expected_sequence": ["write_file", "verify__verify"],
+    "order_sensitive": true,
+    "success_criteria": "写入 HTML 后经 verify 静态验收（可含自动修复轮）",
+    "scoring": "tool_recall+order"
+  },
+  {
+    "id": "T04",
+    "title": "生成网页后截图核验",
+    "user_prompt": "做个登录页，然后截个图给我看",
+    "expected_tools": ["write_file", "screenshot"],
+    "expected_sequence": ["write_file", "screenshot"],
+    "order_sensitive": true,
+    "success_criteria": "先产出页面再截图",
+    "scoring": "tool_recall+order"
+  },
+  {
+    "id": "T05",
+    "title": "检索并引用",
+    "user_prompt": "查一下 llama.cpp 的 --lora 参数怎么用，给我来源",
+    "expected_tools": ["search"],
+    "expected_sequence": ["search"],
+    "order_sensitive": false,
+    "success_criteria": "发起检索，并在回复中给出可引用的来源",
+    "scoring": "tool_recall"
+  },
+  {
+    "id": "T06",
+    "title": "记一条长期记忆",
+    "user_prompt": "记住：我每周三晚上做备份",
+    "expected_tools": ["memory__append"],
+    "expected_sequence": ["memory__append"],
+    "order_sensitive": false,
+    "success_criteria": "调用记忆写入而非文件写入",
+    "scoring": "tool_recall"
+  },
+  {
+    "id": "T07",
+    "title": "列计划并加待办",
+    "user_prompt": "帮我记一下：明天要交周报",
+    "expected_tools": ["todo"],
+    "expected_sequence": ["todo"],
+    "order_sensitive": false,
+    "success_criteria": "写入待办/计划，而非直接作答或写文件",
+    "scoring": "tool_recall"
+  },
+  {
+    "id": "T08",
+    "title": "多轮：先读后改",
+    "user_prompt": "先看看 notes.txt 写了什么，然后把第二行删掉",
+    "expected_tools": ["read_file", "edit_file"],
+    "expected_sequence": ["read_file", "edit_file"],
+    "order_sensitive": true,
+    "success_criteria": "多轮上下文中先读再改，顺序正确",
+    "scoring": "tool_recall+order"
+  },
+  {
+    "id": "T09",
+    "title": "视觉问答",
+    "user_prompt": "（上传图片）这张图里有什么？",
+    "expected_tools": ["vision__analyze"],
+    "expected_sequence": ["vision__analyze"],
+    "order_sensitive": false,
+    "success_criteria": "调用视觉分析而非纯文本猜测",
+    "scoring": "tool_recall"
+  },
+  {
+    "id": "T10",
+    "title": "无工具负例：闲聊",
+    "user_prompt": "你信命吗？",
+    "expected_tools": [],
+    "expected_sequence": [],
+    "order_sensitive": false,
+    "success_criteria": "直接作答，不调用任何工具",
+    "scoring": "no_tool"
+  },
+  {
+    "id": "T11",
+    "title": "无工具负例：知识问答",
+    "user_prompt": "帮我取个笔名",
+    "expected_tools": [],
+    "expected_sequence": [],
+    "order_sensitive": false,
+    "success_criteria": "直接作答，不调用任何工具",
+    "scoring": "no_tool"
+  },
+  {
+    "id": "T12",
+    "title": "跨工具：读→总结→写备忘录",
+    "user_prompt": "读 meeting.md，总结要点，再写一份 memo.md",
+    "expected_tools": ["read_file", "write_file"],
+    "expected_sequence": ["read_file", "write_file"],
+    "order_sensitive": true,
+    "success_criteria": "先读后写，且产出备忘录文件",
+    "scoring": "tool_recall+order"
+  }
+]

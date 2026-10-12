@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 470" font-family="'Segoe UI', system-ui, 'Microsoft YaHei', sans-serif">
+  <!-- window -->
+  <rect x="10" y="10" width="660" height="450" rx="14" fill="#181825" stroke="#313244" stroke-width="1.5"/>
+  <!-- title bar -->
+  <rect x="10" y="10" width="660" height="38" rx="14" fill="#1e1e2e"/>
+  <rect x="10" y="34" width="660" height="14" fill="#1e1e2e"/>
+  <circle cx="34" cy="29" r="6" fill="#f38ba8"/>
+  <circle cx="54" cy="29" r="6" fill="#f9e2af"/>
+  <circle cx="74" cy="29" r="6" fill="#a6e3a1"/>
+  <text x="100" y="34" fill="#cdd6f4" font-size="15" font-weight="600">隅居客 · 聊天</text>
+  <text x="640" y="34" fill="#6c7086" font-size="12" text-anchor="end">🔒 白名单</text>
+  <line x1="10" y1="48" x2="670" y2="48" stroke="#313244"/>
+
+  <!-- user bubble -->
+  <rect x="330" y="64" width="320" height="46" rx="14" fill="#89b4fa"/>
+  <text x="348" y="92" fill="#11111b" font-size="14">帮我把 report.md 读出来，总结成三点</text>
+
+  <!-- assistant label -->
+  <text x="30" y="134" fill="#6c7086" font-size="12">隅居客</text>
+
+  <!-- tool card -->
+  <rect x="30" y="144" width="600" height="40" rx="10" fill="#313244" stroke="#f9e2af" stroke-width="1"/>
+  <rect x="30" y="144" width="4" height="40" rx="2" fill="#f9e2af"/>
+  <text x="50" y="169" fill="#f9e2af" font-size="14">🔧 read_file · report.md</text>
+
+  <!-- status chip -->
+  <rect x="30" y="194" width="210" height="26" rx="13" fill="#1e1e2e"/>
+  <text x="46" y="211" fill="#a6e3a1" font-size="13">✅ 读取成功 · 1284 字</text>
+
+  <!-- summary bubble -->
+  <rect x="30" y="232" width="600" height="150" rx="12" fill="#313244"/>
+  <text x="48" y="262" fill="#cdd6f4" font-size="14">总结：</text>
+  <text x="48" y="290" fill="#cdd6f4" font-size="13">1. 背景：消费级硬件自托管 128k 上下文私有助手</text>
+  <text x="48" y="316" fill="#cdd6f4" font-size="13">2. 架构：笔记本推理 + 上海 VPS 反代，工具桥 16–17 能力</text>
+  <text x="48" y="342" fill="#cdd6f4" font-size="13">3. 取舍：隐私/成本 vs 显存约束，需量化与守卫</text>
+  <text x="48" y="368" fill="#6c7086" font-size="12">⌁ 工具调用闭环：调用 → 结果回灌 → 作答</text>
+
+  <!-- footer caption -->
+  <text x="30" y="444" fill="#585b70" font-size="11">脱敏示例 · 真实会话结构还原 · 详见 docs/demo.md</text>
+</svg>

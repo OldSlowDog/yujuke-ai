@@ -1,0 +1,14 @@
+{
+  "T01": ["read_file"],
+  "T02": ["read_file", "edit_file"],
+  "T03": ["write_file", "verify__verify"],
+  "T04": ["write_file", "screenshot"],
+  "T05": ["search"],
+  "T06": ["memory__append"],
+  "T07": ["todo"],
+  "T08": ["read_file", "edit_file"],
+  "T09": ["vision__analyze"],
+  "T10": [],
+  "T11": [],
+  "T12": ["read_file", "write_file"]
+}

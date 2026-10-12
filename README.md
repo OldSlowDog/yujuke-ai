@@ -2,7 +2,7 @@
 
 > Self-hosted private AI assistant on consumer hardware — a hybrid edge+cloud stack serving a **128k-context, tool-using LLM** to **multiple web users**, fully under your own control.
 
-[中文](./README.md) · Architecture: [`ARCHITECTURE.md`](./ARCHITECTURE.md) · Tool contract: [`docs/tool-contract.md`](./docs/tool-contract.md)
+[中文](./README.md) · Architecture: [`ARCHITECTURE.md`](./ARCHITECTURE.md) · Tool contract: [`docs/tool-contract.md`](./docs/tool-contract.md) · Demo: [`docs/demo.md`](./docs/demo.md) · LoRA: [`docs/lora-finetuning.md`](./docs/lora-finetuning.md) · Eval: [`eval/`](./eval/)
 
 ---
 
@@ -46,10 +46,24 @@
 - 实现**工具调用桥**与带安全/上下文守卫的 **Agent 循环**。
 - 端到端**自托管**整套基础设施（反代、容器化、计划任务、鉴权）。
 
+## 演示（Demo）
+
+代表性会话的结构化转录与界面还原（聊天页需鉴权，无法自动抓实时截图）：[`docs/demo.md`](./docs/demo.md) · [聊天界面还原 SVG](./assets/demo-chat.svg)。
+
+## 模型增强（LoRA 微调）
+
+为治 4B 模型「意图 → 工具名」映射断裂，做过一轮 QLoRA 场景微调：8GB 笔记本 GPU 上训、534→720 条语料、评估三率（首调命中 / 该调不调 / 不该乱调）。结论与完整记录见 [`docs/lora-finetuning.md`](./docs/lora-finetuning.md)。
+
+## 评测基准（Evaluation）
+
+- **多步 Agent 任务基准**：12 个真实场景任务 + 可复现打分 runner（`eval/run_eval.py`），口径对齐 LoRA 三率。
+- **工具调用纠偏基准（LoRA 三率）**：基座首调命中 42.2% → LoRA 87.8%（+45pp），详见 [`eval/RESULTS.md`](./eval/RESULTS.md)。
+
 ## 局限与下一步（Limitations / future work）
 
 - 单边缘节点，无高可用；VPS 备案 / TLS 待完善。
-- **缺标准化评测（evaluation harness）** —— 下一步补一套 Agent 任务基准，量化多步工具调用成功率。
+- LoRA 微调处于**暂停**状态：v4 过冲 / v5 欠拟合的两端已定位，下一步做「v5 配方 + 2 epoch」控制变量实验并导出 GGUF 上线 A/B。
+- 多步任务基准的**真实数字**需在装有 LoRA 适配器 + 工具桥的部署上用 `eval/run_eval.py --live` 跑出（本仓库不含凭证）。
 - 可扩展为多模型路由与负载均衡。
 
 ## 关于本仓库（Repository scope）
