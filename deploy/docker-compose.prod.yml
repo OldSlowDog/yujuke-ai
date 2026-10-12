@@ -34,6 +34,10 @@ services:
     build:
       context: ..
       dockerfile: Dockerfile
+    # 覆盖 Dockerfile CMD：db push 必须加 --accept-data-loss，
+    # 否则「新增唯一约束」警告会让 prisma 直接报错退出 → 容器崩溃重启。
+    # 用 compose 覆盖可在不重建镜像的前提下热修启动命令。
+    command: ["sh", "-c", "npx prisma db push --skip-generate --accept-data-loss && node dist/main.js"]
     restart: unless-stopped
     env_file: .env
     depends_on:

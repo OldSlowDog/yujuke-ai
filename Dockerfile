@@ -24,4 +24,7 @@ COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/proto ./proto
 EXPOSE 3000
 # 启动时同步 schema 到库（首次建表 + pgvector 扩展已在 postgres-init 创建）
-CMD ["sh", "-c", "npx prisma db push --skip-generate && node dist/main.js"]
+# ⚠️ 必须带 --accept-data-loss：prisma 对「新增 User.username 唯一约束」会判定为
+#    潜在数据丢失并直接拒绝执行（ERROR: Use the --accept-data-loss flag），
+#    容器随即崩溃重启。新库/空表场景下加该标志是安全的。
+CMD ["sh", "-c", "npx prisma db push --skip-generate --accept-data-loss && node dist/main.js"]
