@@ -1,28 +1,47 @@
-# ===== 默认拒绝：本仓库只收录经人工审查的文档，杜绝任何密钥/凭证/基础设施泄漏 =====
-# Default deny — only curated docs are allowed in; nothing else can be committed.
+# ===== 依赖 =====
+node_modules/
+.pnp/
+.pnp.js
 
-*
-!.gitignore
-!README.md
-!ARCHITECTURE.md
-!LICENSE
-!assets/
-!assets/*
-!docs/
-!docs/*
-!eval/
-!eval/**
-!transcripts/
-!transcripts/**
+# ===== 构建产物 =====
+dist/
+build/
+out/
+*.tsbuildinfo
+.nest/
 
-# 安全网：显式阻断任何可能的密钥/凭证文件（即便被误加入也会被忽略）
-*.env
+# ===== 环境变量 / 密钥 / 凭证（绝不入库） =====
+.env
+.env.*
+!.env.example
 *.key
 *.pem
 *.pub
 *htpasswd*
 *secret*
-*credential*
 *password*
+*credential*
 *.gguf
-*.toml
+
+# ===== 真实用户数据与数据库存储（绝不入库） =====
+/data/
+pgdata/
+*.db
+*.sqlite
+*.sqlite3
+dump*.sql
+
+# ===== 日志 =====
+*.log
+logs/
+
+# ===== 编辑器 / OS =====
+.vscode/
+.idea/
+.DS_Store
+
+# ===== 放行：源码、文档、proto、配置模板 =====
+!src/
+!proto/
+!docs/
+!assets/

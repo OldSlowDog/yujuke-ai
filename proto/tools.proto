@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package tools;
+
+// 工具桥服务：Portal 编排层 ↔ 本地能力（文件/任务/检索/预览/记忆）之间的内部通信
+// 取代原 REST + X-MCP-Key 的调用约定，改为强类型 gRPC，便于跨语言与流式扩展。
+service ToolBridge {
+  rpc Call(CallRequest) returns (CallResponse);
+}
+
+message CallRequest {
+  string name = 1;            // 工具名（与广播名逐字一致）
+  string arguments_json = 2; // JSON 序列化参数
+}
+
+message CallResponse {
+  bool is_error = 1;
+  string content_json = 2; // [{ "type": ..., "text": ... }]
+}

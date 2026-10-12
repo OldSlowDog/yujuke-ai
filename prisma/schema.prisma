@@ -1,0 +1,77 @@
+// Prisma schema — 隅居客后端数据模型
+// 设计要点：
+//  - 会话/消息用关系表；消息 content 用 Json (PG JSONB) 承载半结构化内容
+//    （含工具调用意图、引用来源徽标等），避免为每种变体建列。
+//  - 知识库向量用 Unsupported("vector(1536)") 映射 pgvector 原生类型，
+//    供记忆/检索做相似度查询（需用 prisma 的 $queryRaw 执行 '<->' 算子）。
+//  - ToolCall 独立表，便于评测与审计（与 eval/ 三率口径对齐）。
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  username  String    @unique
+  createdAt DateTime  @default(now())
+  sessions  Session[]
+}
+
+model Session {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  messages  Message[]
+}
+
+model Message {
+  id        String     @id @default(uuid())
+  sessionId String
+  session   Session    @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  role      String // 'user' | 'assistant' | 'tool'
+  content   Json // 半结构化：文本 / 工具结果 / 引用来源数组
+  createdAt DateTime   @default(now())
+  toolCalls ToolCall[]
+}
+
+model ToolCall {
+  id        String   @id @default(uuid())
+  messageId String
+  message   Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  name      String
+  arguments Json
+  result    Json?
+  isError   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([name])
+}
+
+model KnowledgeChunk {
+  id        String   @id @default(uuid())
+  source    String
+  text      String
+  // pgvector：1536 维，与嵌入模型对齐
+  embedding Unsupported("vector(1536)")?
+  createdAt DateTime @default(now())
+
+  @@index([source])
+}
+
+model EvalRun {
+  id         String   @id @default(uuid())
+  taskId     String
+  passed     Boolean
+  toolRecall Float
+  firstHit   Boolean
+  raw        Json
+  createdAt  DateTime @default(now())
+}

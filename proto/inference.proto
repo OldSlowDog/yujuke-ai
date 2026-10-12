@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package inference;
+
+// 推理服务：Portal 编排层 ↔ 边缘 llama.cpp 之间的内部通信
+service Inference {
+  // 流式生成：请求进，token 流出（契合 LLM 增量输出）
+  rpc StreamChat(StreamChatRequest) returns (stream StreamChatResponse);
+}
+
+message StreamChatRequest {
+  string session_id = 1;
+  string user_message = 2;
+  repeated ToolSpec tools = 3;
+  int32 ctx_size = 4;
+}
+
+message ToolSpec {
+  string name = 1;
+  string description = 2;
+}
+
+message StreamChatResponse {
+  oneof event {
+    string token = 1;       // 增量 token
+    ToolCall tool_call = 2; // 模型请求调用工具
+    string done = 3;        // 结束标识（含用量等元数据）
+  }
+}
+
+message ToolCall {
+  string id = 1;
+  string name = 2;
+  string arguments_json = 3;
+}
