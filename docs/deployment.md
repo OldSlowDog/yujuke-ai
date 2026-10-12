@@ -8,7 +8,7 @@
 ```
 上海 VPS (139.196.25.178)
 ├── nginx :19004  ──反代──▶ 127.0.0.1:3001 ──▶ yujuke-api 容器 (NestJS:3000)
-│                                                ├── yujuke-postgres (PostgreSQL 16 + pgvector)
+│                                                ├── yujuke-postgres (pgvector/pgvector:pg16)
 │                                                └── yujuke-redis    (Redis 7)
 └── frps :18081 ──隧道──▶ 笔记本 llama.cpp :8081   ← 推理经此调用
 ```

@@ -4,7 +4,9 @@
 #   docker compose -f docker-compose.prod.yml up -d --build
 services:
   postgres:
-    image: postgres:16-alpine
+    # 必须用 pgvector 官方镜像：标准 postgres:16 镜像不含 vector 扩展，
+    # 否则 KnowledgeChunk.embedding (vector(1536)) 无法创建，且 init 脚本会失败
+    image: pgvector/pgvector:pg16
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
